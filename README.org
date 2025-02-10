@@ -206,7 +206,8 @@ cancel-undo-boundary
 显示撤销树:
 C-x v t 或 M-x undo-tree-visualize RET
 
-** 编辑快捷键
+**
+编辑快捷键
 
 
 
@@ -286,6 +287,13 @@ C-x v t 或 M-x undo-tree-visualize RET
 | 列出含某一关键词的命令                   | C-h a                  | apropos-command                |
 | 列出含某一关键词的符号的文档              | C-h d                  | apropos-documentation          |
 | 帮助的帮助                             | C-h ?                  | help-for-help                  |
+
+
+** 帮助
+M-x
+help-with-tutorial-spec-language
+help-with-tutorial (C-h t)
+
 
 
 

@@ -99,7 +99,7 @@ makes:
   :group 'org-export-jekyll-use-src-plugin
   :type 'boolean)
 
-(defcustom org-jekyll-md-use-todays-date t
+(defcustom org-jekyll-md-use-todays-date nil
   "If t, org-jekyll-md exporter will prepend the filename with today's date."
   :group 'org-export-jekyll
   :type 'boolean)
@@ -183,9 +183,11 @@ plist used as a communication channel."
       (let ((language (org-element-property :language src-block))
             (value (org-remove-indentation
                     (org-element-property :value src-block))))
-        (format "{%% highlight %s %%}\n%s{%% endhighlight %%}"
+        ;;(format "{%% highlight %s %%}\n%s{%% endhighlight %%}"
+	(format "```%s\n%s```"
                 language value))
     (org-export-with-backend 'md src-block contents info)))
+
 
 (defun org-jekyll-md-table (table contents info)
   "Empty transformation. Org tables should be valid kramdown syntax."
@@ -207,12 +209,14 @@ plist used as a communication channel."
               (identity "|")))))
 
 ;;; Template
-
+(setq jekyll-date (format-time-string "%F-"))
 (defun org-jekyll-md-template (contents info)
   "Return complete document string after MD conversion.
 
 CONTENTS is the transcoded contents string. INFO is a plist
 holding export options."
+  (setq jekyll-date (format "%s" (org-jekyll-md--get-option info :date)))
+  ;;(print jekyll-date)
   (if org-jekyll-md-include-yaml-front-matter
       (concat
        (org-jekyll-md--yaml-front-matter info)
@@ -289,8 +293,7 @@ holding export options."
   "Optionally include date in exported filename."
   (if org-jekyll-md-use-todays-date
       (format-time-string "%F-")
-    ""))
-
+    (concat jekyll-date "-")))
 
 ;;; End-User functions
 
@@ -337,9 +340,41 @@ Return output file name."
                        "\n#+JEKYLL_CATEGORIES: " categories
                        "\n#+JEKYLL_TAGS: "       tags
                        "\n\n* \n\n{{{more}}}"))))))
+(setq org-export-with-sub-superscripts nil)
 
+;; (defun my-org-md-extract-keywords (backend)
+;;   "Extract custom keywords for Markdown export."
+;;   (let ((title (or (org-export-data (plist-get (org-export-get-environment) :title) nil) ""))
+;;         (author (or (org-export-data (plist-get (org-export-get-environment) :author) nil) ""))
+;;         (date (or (org-export-data (plist-get (org-export-get-environment) :date) nil) ""))
+;;         (categories (or (org-element-map (org-element-parse-buffer) 'keyword
+;;                          (lambda (keyword)
+;;                            (when (string= (org-element-property :key keyword) "CATEGORIES")
+;;                              (split-string (org-element-property :value keyword) ", "))))
+;;                         '()))
+;;         (tags (or (org-element-map (org-element-parse-buffer) 'keyword
+;;                     (lambda (keyword)
+;;                       (when (string= (org-element-property :key keyword) "TAGS")
+;;                         (split-string (org-element-property :value keyword) ", "))))
+;;                   '())))
+;;     (concat "---\n"
+;;             (format "title: %s\n" title)
+;;             (format "author: %s\n" author)
+;;             (format "date: %s\n" date)
+;;             (if categories (format "categories: [%s]\n" (mapconcat #'identity categories ", ")) "")
+;;             (if tags (format "tags: [%s]\n" (mapconcat #'identity tags ", ")) "")
+;;             "---\n")))
+
+;; (defun my-org-md-prepend-yaml-front-matter (backend)
+;;   "Prepend YAML front matter to the exported document."
+;;   (when (eq backend 'md)
+;;     (let ((yaml-front-matter (my-org-md-extract-keywords backend)))
+;;       (save-excursion
+;;         (goto-char (point-min))
+;;         (insert yaml-front-matter)))))
+
+;; (add-hook 'org-export-before-processing-functions 'my-org-md-prepend-yaml-front-matter)
 ;;; provide
-
 (provide 'ox-jekyll-md)
 
 ;;; ox-jekyll-md.el ends here

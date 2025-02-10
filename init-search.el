@@ -19,7 +19,7 @@
    ("C-c s" . 'ivy-switch-view)
    ("C-c V" . 'ivy-pop-view)
    ("C-x C-@" . 'counsel-mark-ring); 在某些终端上 C-x C-SPC 会被映射为 C-x C-@，比如在 macOS 上，所以要手动设置
-   ("C-x C-SPC" . 'counsel-mark-ring)
+   ;;("C-x C-SPC" . 'counsel-mark-ring)
    :map minibuffer-local-map
    ("C-r" . counsel-minibuffer-history)))
 

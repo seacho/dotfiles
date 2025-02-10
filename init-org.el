@@ -85,3 +85,5 @@ If LANG is not provided, guess the language based on the current buffer's file e
 ;; Ensure org-mode is loaded before defining the key binding
 (eval-after-load 'org
   '(define-key org-mode-map (kbd "C-c s") 'my-insert-src-block))
+;;显示自动换行
+(add-hook 'org-mode-hook 'visual-line-mode)

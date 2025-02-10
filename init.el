@@ -33,7 +33,7 @@
 (require 'package)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/") t)
-(print package-archives)
+;;(print package-archives)
 (package-initialize)
 (eval-when-compile
   (require 'use-package))
