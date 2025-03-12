@@ -209,7 +209,7 @@ plist used as a communication channel."
               (identity "|")))))
 
 ;;; Template
-(setq jekyll-date (format-time-string "%F-"))
+;;(setq jekyll-date (format-time-string "%F"))
 (defun org-jekyll-md-template (contents info)
   "Return complete document string after MD conversion.
 
@@ -292,7 +292,7 @@ holding export options."
 (defun org-jekyll-md-filename-date ()
   "Optionally include date in exported filename."
   (if org-jekyll-md-use-todays-date
-      (format-time-string "%F-")
+      (format-time-string "%F")
     (concat jekyll-date "-")))
 
 ;;; End-User functions

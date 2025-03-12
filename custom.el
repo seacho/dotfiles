@@ -70,7 +70,18 @@
 		   flycheck-rust ggtags gruber-darker-theme ht lv
 		   racer spinner which-key yasnippet)))
 
+;; 设置全局缩进风格，使用 4 个空格代替制表符
+(setq-default indent-tabs-mode nil)
+(setq-default c-basic-offset 4)
 
+;; 确保 C 模式和 C++ 模式的缩进设置一致
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (c-set-offset 'substatement-open 0) ;; 调整子语句偏移
+            (setq c-basic-offset 4)))           ;; C/C++ 基本缩进为 4 个空格
+(add-hook 'c++-mode-hook
+          (lambda ()
+            (setq c-basic-offset 4)))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
