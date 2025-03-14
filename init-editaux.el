@@ -1,28 +1,27 @@
-
-;;lsp-mode
-;; (use-package lsp-mode
-;;   :init
-;;   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-;;   (setq lsp-keymap-prefix "C-c l")
-;;   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-;;          (c-mode . lsp)
-;;          (c++-mode . lsp)
-;;          (python-mode . lsp)
-;; 	 (objc-mode . lsp)
-;;          ;; If you want which-key integration
-;;          (lsp-mode . lsp-enable-which-key-integration))
-;;   :commands lsp
-;;   :ensure t
-;;   )
+;; lsp-mode
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (c-mode . lsp)
+         (c++-mode . lsp)
+         (python-mode . lsp)
+	 (objc-mode . lsp)
+         ;; If you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp
+  :ensure t
+  )
 
 
 ;; Auto completion
-;; (use-package auto-complete
-;;   :ensure t
-;;   :init
-;;   (progn
-;;   (ac-config-default)
-;;   (global-auto-complete-mode t)))
+(use-package auto-complete
+  :ensure t
+  :init
+  (progn
+  (ac-config-default)
+  (global-auto-complete-mode t)))
 
 ;; bring up help for key bindings
 (use-package which-key

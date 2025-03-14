@@ -61,10 +61,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(gruber-darker))
- '(custom-safe-themes
-   '("01a9797244146bbae39b18ef37e6f2ca5bebded90d9fe3a2f342a9e863aaa4fd"
-     default))
+ 
  '(package-selected-packages
    '(auto-complete avy benchmark-init cargo company-irony counsel elfeed
 		   flycheck-rust ggtags gruber-darker-theme ht lv
@@ -93,3 +90,26 @@
 ;; dark 主题
 ;; (use-package gruber-darker-theme
 ;;   :ensure t)
+
+
+
+;; (use-package doom-themes
+;;   :ensure t
+;;   :config
+;;   ;; Global settings (defaults)
+;;   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+;;         doom-themes-enable-italic t) ; if nil, italics is universally disabled
+;;   (load-theme 'doom-one t)
+
+;;   ;; Enable flashing mode-line on errors
+;;   (doom-themes-visual-bell-config)
+;;   ;; Enable custom neotree theme (nerd-icons must be installed!)
+;;   (doom-themes-neotree-config)
+;;   ;; or for treemacs users
+;;   (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+;;   (doom-themes-treemacs-config)
+;;   ;; Corrects (and improves) org-mode's native fontification.
+;;   (doom-themes-org-config))
+
+;; (load "~/.emacs.d/calm-forest-theme.el")
+(load-theme 'tango-dark t)  ; 加载 'wombat' 主题，第二个参数 `t` 表示不提示确认
