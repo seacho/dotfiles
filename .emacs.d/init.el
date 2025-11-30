@@ -1,28 +1,5 @@
-;; ==============================================
-;; Ultra-light Emacs config for RE + Org
-;; ==============================================
-
-
-;; ---------------------------------------------------------
-;; NETWORK PROXY SETUP
-;; ---------------------------------------------------------
-(setq url-proxy-services
-   '(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
-     ("http"     . "127.0.0.1:12334")  ; Replace with your proxy IP:PORT
-     ("https"    . "127.0.0.1:12334"))) ; Replace with your proxy IP:PORT
-
-;; ========== 包管理 ==========
-
-;; (load "~/.emacs.d/emacs.rc/rc.el")
-
-;; (load "~/.emacs.d/emacs.rc/misc-rc.el")
-;; (load "~/.emacs.d/emacs.rc/org-mode-rc.el")
-;; (load "~/.emacs.d/emacs.rc/autocommit-rc.el")
-
-
-(require 'package)
-(setq package-archives '(("melpa" . "https://melpa.org/packages/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")))
+package-archives '(("melpa" . "https://melpa.org/packages/")
+		   ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
 
@@ -31,18 +8,18 @@
 (defvar rc/package-contents-refreshed nil)
 
 (defun rc/package-refresh-contents-once ()
-  (when (not rc/package-contents-refreshed)
-    (setq rc/package-contents-refreshed t)
-    (package-refresh-contents)))
+(when (not rc/package-contents-refreshed)
+  (setq rc/package-contents-refreshed t)
+  (package-refresh-contents)))
 
 (defun rc/require-one-package (package)
-  (when (not (package-installed-p package))
-    (rc/package-refresh-contents-once)
-    (package-install package)))
+(when (not (package-installed-p package))
+  (rc/package-refresh-contents-once)
+  (package-install package)))
 
 (defun rc/require (&rest packages)
-  (dolist (package packages)
-    (rc/require-one-package package)))
+(dolist (package packages)
+  (rc/require-one-package package)))
 
 (rc/require-one-package 'use-package)
 
@@ -55,20 +32,24 @@
 (setq use-package-always-ensure t)
 
 (use-package dash
-  :ensure t
-  :demand t)
+:ensure t
+:demand t)
 
 (use-package dash-functional
-  :ensure t
-  :demand t)
+:ensure t
+:demand t)
 
 
 ;; ========== 基础 UI ==========
 ;; Disable all graphical UI elements to focus on code
-(tool-bar-mode -1)           ; hide the tool bar
-(menu-bar-mode -1)           ; learn the hotkeys instead
 (when (display-graphic-p)
-  (scroll-bar-mode -1))
+(when (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(when (fboundp 'tool-bar-mode)   (tool-bar-mode -1)))
+
+(when (fboundp 'menu-bar-mode)
+(menu-bar-mode -1))
+
+
 
 (setq inhibit-startup-screen t) ; jump straight to scratch buffer
 (global-display-line-numbers-mode 1)
@@ -78,8 +59,8 @@
 
 
 (use-package gruber-darker-theme
-  :config
-  (load-theme 'gruber-darker t))
+:config
+(load-theme 'gruber-darker t))
 
 ;; ==============================================
 ;;     SECTION 1 —— 代码阅读：LSP + tree-sitter
@@ -93,9 +74,9 @@
 
 ;;; Whitespace mode
 (defun rc/set-up-whitespace-handling ()
-  (interactive)
-  (whitespace-mode 1)
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+(interactive)
+(whitespace-mode 1)
+(add-to-list 'write-file-functions 'delete-trailing-whitespace))
 
 (add-hook 'tuareg-mode-hook 'rc/set-up-whitespace-handling)
 (add-hook 'c++-mode-hook 'rc/set-up-whitespace-handling)
@@ -142,7 +123,7 @@
 (electric-pair-mode 1)
 
 ;; No backup files cluttering directory (keeps folders clean)
-(setq make-backup-files nil) 
+(setq make-backup-files nil)
 (setq auto-save-default nil)
 
 
@@ -154,7 +135,7 @@
 (use-package magit
   :bind ("C-x g" . magit-status))
 ;; IVY/SWIPER/COUNSEL: For fuzzy finding.
-;; Tsoding has used various completion frameworks, but Ivy is 
+;; Tsoding has used various completion frameworks, but Ivy is
 ;; a standard minimal choice for this style.
 (use-package ivy
   :config
@@ -162,7 +143,7 @@
 
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file)))
+	 ("C-x C-f" . counsel-find-file)))
 
 ;; ---------------------------------------------------------
 ;; COMPILATION
@@ -187,18 +168,13 @@
   "Execute the current file based on extension."
   (interactive)
   (cond ((string= (file-name-extension buffer-file-name) "py")
-         (compile (format "python3 %s" (buffer-name))))
-        ((string= (file-name-extension buffer-file-name) "c")
-         (compile (format "gcc -Wall -Wextra %s -o %s && ./%s" 
-                          (buffer-name) (file-name-base) (file-name-base))))
-        (t (message "Unknown file type"))))
+	 (compile (format "python3 %s" (buffer-name))))
+	((string= (file-name-extension buffer-file-name) "c")
+	 (compile (format "gcc -Wall -Wextra %s -o %s && ./%s"
+			  (buffer-name) (file-name-base) (file-name-base))))
+	(t (message "Unknown file type"))))
 
 (global-set-key (kbd "C-c r") 'run-current-file)
-
-
-
-
-
 
 
 ;; ==============================================
@@ -220,14 +196,14 @@
 (use-package asm-mode
   :mode ("\\.S\\'" "\\.asm\\'" "\\.s\\'" "\\.disasm\\'")
   :hook (asm-mode . (lambda ()
-                      (setq tab-width 8))))
+		      (setq tab-width 8))))
 
 ;; 反汇编视图（你会用到很多）
 (defun disasm-buffer ()
   "Disassemble current buffer via objdump"
   (interactive)
   (let* ((file (buffer-file-name))
-         (buf  (get-buffer-create "*disasm*")))
+	 (buf  (get-buffer-create "*disasm*")))
     (unless file (error "Not visiting a file"))
     (with-current-buffer buf
       (erase-buffer)
