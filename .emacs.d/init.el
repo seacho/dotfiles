@@ -1,4 +1,26 @@
-package-archives '(("melpa" . "https://melpa.org/packages/")
+;; ==============================================
+
+;; Ultra-light Emacs config for RE + LSP + Org
+
+;; ==============================================
+
+;; ---------------------------------------------------------
+
+;; NETWORK PROXY SETUP
+
+;; ---------------------------------------------------------
+
+(setq url-proxy-services
+
+'(("no_proxy" . "^\\(localhost\\|10\\..*\\|192\\.168\\..*\\)")
+
+  ("http" . "127.0.0.1:12334") ; Replace with your proxy IP:PORT
+  ("https" . "127.0.0.1:12334"))) ; Replace with your proxy IP:PORT
+;; ========== 包管理 ==========
+
+(require 'package)
+
+(setq package-archives '(("melpa" . "https://melpa.org/packages/")
 		   ("gnu" . "https://elpa.gnu.org/packages/")))
 (package-initialize)
 
@@ -74,29 +96,29 @@ package-archives '(("melpa" . "https://melpa.org/packages/")
 
 ;;; Whitespace mode
 (defun rc/set-up-whitespace-handling ()
-(interactive)
-(whitespace-mode 1)
-(add-to-list 'write-file-functions 'delete-trailing-whitespace))
+  (interactive)
+  (whitespace-mode 1)
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 
-(add-hook 'tuareg-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'c++-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'c-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'simpc-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'emacs-lisp-mode 'rc/set-up-whitespace-handling)
-(add-hook 'java-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'lua-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'rust-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'scala-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'markdown-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'haskell-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'python-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'erlang-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'asm-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'fasm-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'go-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'nim-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'yaml-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'porth-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'tuareg-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'c++-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'c-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'simpc-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'emacs-lisp-mode 'rc/set-up-whitespace-handling)
+;; (add-hook 'java-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'lua-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'rust-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'scala-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'markdown-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'haskell-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'python-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'erlang-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'asm-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'fasm-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'go-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'nim-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'yaml-mode-hook 'rc/set-up-whitespace-handling)
+;; (add-hook 'porth-mode-hook 'rc/set-up-whitespace-handling)
 
 
 
@@ -213,15 +235,27 @@ package-archives '(("melpa" . "https://melpa.org/packages/")
 
 (global-set-key (kbd "C-c d") 'disasm-buffer)
 
+;; (custom-set-variables
+;;  ;; custom-set-variables was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  '(package-selected-packages
+;;    '(ccls counsel dash-functional go-mode gruber-darker-theme json-mode
+;; 	  magit python-mode pyvenv rust-mode treesit-auto web-mode
+;; 	  yaml-mode)))
+;; (custom-set-faces
+;;  ;; custom-set-faces was added by Custom.
+;;  ;; If you edit it by hand, you could mess it up, so be careful.
+;;  ;; Your init file should contain only one such instance.
+;;  ;; If there is more than one, they won't work right.
+;;  )
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(ccls counsel dash-functional go-mode gruber-darker-theme json-mode
-	  magit python-mode pyvenv rust-mode treesit-auto web-mode
-	  yaml-mode)))
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
